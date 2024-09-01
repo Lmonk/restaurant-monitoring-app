@@ -1,0 +1,5 @@
+export { default as ChairIcon } from './ChairIcon'
+export { default as DiningTableIcon } from './DiningTableIcon'
+export { default as BoothTableIcon } from './BoothTableIcon'
+export { default as OutdoorTableIcon } from './OutdoorTableIcon'
+export { default as PrivateDiningTableIcon } from './PrivateDiningTableIcon'

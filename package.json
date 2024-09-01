@@ -14,9 +14,14 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
+    "@types/react-lazyload": "^3.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "redux": "^5.0.1"
+    "react-virtualized-auto-sizer": "^1.0.24",
+    "react-window": "^1.8.10",
+    "redux": "^5.0.1",
+    "styled-components": "^6.1.13",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -27,6 +32,8 @@
     "@redux-devtools/core": "^4.0.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "@types/react-window": "^1.8.8",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
     "babel-loader": "^9.1.3",
