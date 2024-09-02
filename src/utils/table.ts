@@ -92,8 +92,8 @@ export function getTableIdsToUpdate(tableIds: string[], tables: Tables) {
     (key) => tables[key].warning !== true
   )
 
-  // Determine the number of tables to select (10% of total)
-  const tenPercent = Math.ceil(tableIds.length * 0.1)
+  // Determine the number of tables to select (20% of total)
+  const tenPercent = Math.ceil(tableIds.length * 0.2)
   const halfWithWarning = Math.floor(tenPercent / 2)
 
   // Select random tables with the warning property
