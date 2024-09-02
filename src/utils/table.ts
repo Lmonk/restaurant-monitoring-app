@@ -1,6 +1,7 @@
 import { TableKeysByType, Tables, TableType } from '../models'
 import { v4 as uuidv4 } from 'uuid'
 
+// Mapping table types to column IDs, where each table type is associated with a unique number
 export const tableTypeColumnIds = {
   [TableType.BOOTH_TABLE]: 0,
   [TableType.DINING_TABLE]: 1,
@@ -8,53 +9,54 @@ export const tableTypeColumnIds = {
   [TableType.PRIVATE_DINING_TABLE]: 3,
 }
 
-const tableTypes = [
-  TableType.BOOTH_TABLE,
-  TableType.DINING_TABLE,
-  TableType.OUTDOOR_TABLE,
-  TableType.PRIVATE_DINING_TABLE,
-]
-
-const tableNames = {
+// Mapping table types to their display names
+export const tableNames = {
   [TableType.BOOTH_TABLE]: 'Booth',
   [TableType.DINING_TABLE]: 'Dining',
   [TableType.OUTDOOR_TABLE]: 'Outdoor',
   [TableType.PRIVATE_DINING_TABLE]: 'Private',
 }
 
-export function getMaxRows(groupedTables: TableKeysByType) {
+// Function to find the maximum number of tables
+export function getMaxTables(groupedTables: TableKeysByType) {
+  // Find the type with the longest array of table keys
   const longestType = Object.values(tableTypeColumnIds).reduce<string[]>(
     (acc, type) =>
       groupedTables[type].length > acc.length ? groupedTables[type] : acc,
     []
   )
 
+  // Return the length of the longest arra
   return longestType.length
 }
 
+// Function to group tables by their types
 export function groupTablesByType(tables: Tables) {
-  return Object.keys(tables).reduce<TableKeysByType>(
-    (acc, key) => {
-      acc[tableTypeColumnIds[tables[key].type]].push(key)
-      return acc
-    },
-    {
-      [tableTypeColumnIds[TableType.BOOTH_TABLE]]: [],
-      [tableTypeColumnIds[TableType.DINING_TABLE]]: [],
-      [tableTypeColumnIds[TableType.OUTDOOR_TABLE]]: [],
-      [tableTypeColumnIds[TableType.PRIVATE_DINING_TABLE]]: [],
+  // Reduce the tables object into a grouped structure based on table types
+  return Object.keys(tables).reduce((acc, key) => {
+    if (!acc[tableTypeColumnIds[tables[key].type]]) {
+      acc[tableTypeColumnIds[tables[key].type]] = []
     }
-  )
+    // Push the table key into the appropriate array based on its type
+    acc[tableTypeColumnIds[tables[key].type]].push(key)
+    return acc
+  }, {} as TableKeysByType)
 }
 
 export function getInitialTables(tablesAmount: number) {
   const result: Tables = {}
 
+  // Loop through the number of tables to create
   for (let i = 0; i < tablesAmount; i++) {
     const id = uuidv4()
+    // Randomly select a table type from the tableTypes array
+    const tableTypes = Object.values(TableType)
     const type = tableTypes[Math.floor(Math.random() * tableTypes.length)]
+    // Determine the maximum number of guests (between 2 and 10)
     const maxGuests = Math.floor(Math.random() * 9) + 2
+    // Randomly select the number of current guests (between 0 and maxGuests)
     const guests = Math.floor(Math.random() * (maxGuests + 1))
+
     result[id] = {
       type,
       name: `${tableNames[type]} ${i + 1}`,
@@ -69,13 +71,18 @@ export function getInitialTables(tablesAmount: number) {
 
 export function getTablesUpdate(tableIds: string[], tables: Tables) {
   const result: Tables = {}
-  const tablesTmp = { ...tables }
+
+  // Loop through each table ID in the array
   tableIds.forEach((key) => {
-    if (tablesTmp[key]) {
+    if (tables[key]) {
+      // Update the table in the result object:
+      // - Copy all properties from the original table
+      // - Toggle the warning property
+      // - Set the guests property to a random number between 0 and maxGuests
       result[key] = {
-        ...tablesTmp[key],
-        warning: !tablesTmp[key].warning,
-        guests: Math.floor(Math.random() * (tablesTmp[key].maxGuests + 1)),
+        ...tables[key],
+        warning: !tables[key].warning,
+        guests: Math.floor(Math.random() * (tables[key].maxGuests + 1)),
       }
     }
   })
@@ -92,9 +99,13 @@ export function getTableIdsToUpdate(tableIds: string[], tables: Tables) {
     (key) => tables[key].warning !== true
   )
 
-  // Determine the number of tables to select (20% of total)
-  const tenPercent = Math.ceil(tableIds.length * 0.2)
-  const halfWithWarning = Math.floor(tenPercent / 2)
+  // Determine the number of tables to select (20% or 50% of total depending on size)
+  const idsAmount = tableIds.length
+  let percent = idsAmount >= 10 ? idsAmount * 0.2 : idsAmount * 0.5
+  percent = Math.ceil(percent)
+  const halfWithWarning = Math.floor(percent / 2)
+
+  console.log(percent, halfWithWarning)
 
   // Select random tables with the warning property
   const selectedWithWarning = []
@@ -107,8 +118,7 @@ export function getTableIdsToUpdate(tableIds: string[], tables: Tables) {
   const selectedWithoutWarning = []
   for (
     let i = 0;
-    i < tenPercent - selectedWithWarning.length &&
-    tablesWithoutWarning.length > 0;
+    i < percent - selectedWithWarning.length && tablesWithoutWarning.length > 0;
     i++
   ) {
     const randomIndex = Math.floor(Math.random() * tablesWithoutWarning.length)

@@ -1,14 +1,14 @@
-import { tableTypeColumnIds as columnsByType } from '../utils'
+import { tableTypeColumnIds as columnsByType, tableNames } from '../utils'
 import { TableKeysByType, TableType } from '../models'
 import styled from 'styled-components'
 import { SCROLLBAR_WIDTH } from '../App'
 
-const HeaderTitles = {
-  [TableType.BOOTH_TABLE]: 'Booth',
-  [TableType.DINING_TABLE]: 'Dining',
-  [TableType.OUTDOOR_TABLE]: 'Outdoor',
-  [TableType.PRIVATE_DINING_TABLE]: 'Private',
-}
+const orderedTableTypes = [
+  TableType.BOOTH_TABLE,
+  TableType.DINING_TABLE,
+  TableType.OUTDOOR_TABLE,
+  TableType.PRIVATE_DINING_TABLE,
+]
 
 interface HeaderProps {
   groupTables: TableKeysByType
@@ -31,24 +31,22 @@ const Wrapper = styled.div.withConfig({
   color: gray;
   font-weight: 700;
 
-  & < div {
+  & > div {
     width: 25%;
+    padding: 0 0.5rem;
+    text-align: center;
   }
 
   @media (max-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.75rem;
   }
 `
 
 function getHeaderItem(groupTables: TableKeysByType, type: TableType) {
   return (
     <div>
-      {HeaderTitles[type]}: {groupTables[columnsByType[type]].length}
+      {tableNames[type]}: {groupTables[columnsByType[type]].length}
     </div>
   )
 }
@@ -56,10 +54,7 @@ function getHeaderItem(groupTables: TableKeysByType, type: TableType) {
 export const Header = ({ groupTables, width }: HeaderProps) => {
   return (
     <Wrapper width={width}>
-      {getHeaderItem(groupTables, TableType.BOOTH_TABLE)}
-      {getHeaderItem(groupTables, TableType.DINING_TABLE)}
-      {getHeaderItem(groupTables, TableType.OUTDOOR_TABLE)}
-      {getHeaderItem(groupTables, TableType.PRIVATE_DINING_TABLE)}
+      {orderedTableTypes.map((type) => getHeaderItem(groupTables, type))}
     </Wrapper>
   )
 }
