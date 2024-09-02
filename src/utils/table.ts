@@ -1,6 +1,6 @@
 import { TableKeysByType, Tables, TableType } from '../models'
 
-const tableTypeColumnIds = {
+export const tableTypeColumnIds = {
   [TableType.BOOTH_TABLE]: 0,
   [TableType.DINING_TABLE]: 1,
   [TableType.OUTDOOR_TABLE]: 2,
