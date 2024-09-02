@@ -2,10 +2,11 @@ import { useMemo } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { TableComponent } from './table-component'
 import { FixedSizeGrid as Grid } from 'react-window'
-import { convertRemToPixels, getMaxRows, groupTablesByType } from '../utils'
+import { getGridRowHeight, getMaxRows, groupTablesByType } from '../utils'
 import { useSelector } from 'react-redux'
 import { tablesSelector } from '../redux/tableSlice'
 import { Header } from './header'
+import { SCROLLBAR_WIDTH } from '../App'
 
 interface TableElementProps {
   columnIndex: number
@@ -28,12 +29,12 @@ export const TablesGrid = () => {
     <AutoSizer>
       {({ width, height }) => (
         <div>
-          <Header groupedTables={tablesGroupedByType} width={width} />
+          <Header groupTables={tablesGroupedByType} width={width} />
           <Grid
             height={height}
             width={width}
-            columnWidth={(width - 17) / 4}
-            rowHeight={convertRemToPixels(5)}
+            columnWidth={(width - SCROLLBAR_WIDTH) / 4}
+            rowHeight={getGridRowHeight(5, width)}
             columnCount={4}
             rowCount={getMaxRows(tablesGroupedByType)}
           >

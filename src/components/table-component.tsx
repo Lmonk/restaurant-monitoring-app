@@ -1,4 +1,4 @@
-import styled, { CSSProperties } from 'styled-components'
+import styled from 'styled-components'
 import {
   BoothTableIcon,
   DiningTableIcon,
@@ -7,15 +7,15 @@ import {
 } from '../assets/icons'
 import { Table, TableType } from '../models'
 import { GuestsComponent } from './guests-component'
-import { getFillColor } from '../utils'
+import { getBusyColor } from '../utils'
+import { useMemo } from 'react'
 
 interface TableProps {
   table: Table
-  style?: CSSProperties
 }
 
 interface TableIconProps {
-  percentage: number
+  color: string
 }
 
 interface TableItemProps {
@@ -30,18 +30,22 @@ const tableIcons = {
 }
 
 const TableIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'percentage',
+  shouldForwardProp: (prop) => prop !== 'color',
 })<TableIconProps>`
   width: 4rem;
-  margin-right: 10px;
+  margin-right: 0.5rem;
 
   svg {
     display: block;
-    fill: ${({ percentage }) => getFillColor(percentage)};
+    fill: ${({ color }) => color};
   }
 
   @media (max-width: 768px) {
     width: 2rem;
+  }
+
+  @media (max-width: 991px) {
+    margin-right: 0.25rem;
   }
 `
 
@@ -73,22 +77,53 @@ const TableName = styled.div`
   margin-bottom: 0.5rem;
   font-size: 1.25rem;
   font-weight: 500;
+  display: block;
 
   @media (max-width: 768px) {
     font-size: 1rem;
     margin-bottom: 0.25rem;
   }
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 `
 
-export const TableComponent = ({ table, style }: TableProps) => {
+const ShortTableName = styled.div`
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  display: none;
+
+  @media (max-width: 600px) {
+    display: block;
+  }
+`
+
+const extractNumber = (input: string): number | null => {
+  const match = input.match(/\d+/)
+  return match ? parseInt(match[0], 10) : null
+}
+
+export const TableComponent = ({ table }: TableProps) => {
+  const percentage = useMemo(
+    () => (table.guests / table.maxGuests) * 100,
+    [table.guests, table.maxGuests]
+  )
+
+  const color = useMemo(() => getBusyColor(percentage), [percentage])
+
   return (
-    <TableItem style={style} warning={table.warning}>
-      <TableIcon percentage={(table.guests / table.maxGuests) * 100}>
-        {tableIcons[table.type]}
-      </TableIcon>
+    <TableItem warning={table.warning}>
+      <TableIcon color={color}>{tableIcons[table.type]}</TableIcon>
       <div>
         <TableName>{table.name}</TableName>
-        <GuestsComponent guests={table.guests} maxGuests={table.maxGuests} />
+        <ShortTableName>{extractNumber(table.name)}</ShortTableName>
+        <GuestsComponent
+          guests={table.guests}
+          maxGuests={table.maxGuests}
+          color={color}
+        />
       </div>
     </TableItem>
   )

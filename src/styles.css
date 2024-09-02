@@ -124,32 +124,33 @@ table {
 }
 
 #root {
+  --scroll-width: 17px;
   margin: 2rem auto;
-  max-width: 1017px;
+  max-width: calc(1200px + var(--scroll-width));
   height: calc(100vh - 4rem);
   overflow: hidden;
 }
 
 @-webkit-keyframes input-shadow {
   0% {
-    box-shadow: none;
+    box-shadow: inset 0 0 0.25rem #373737;
   }
   50% {
-    box-shadow: inset 0 0 0.5rem #373737;
+    box-shadow: inset 0 0 0.75rem #373737;
   }
   100% {
-    box-shadow: none;
+    box-shadow: inset 0 0 0.25rem #373737;
   }
 }
 
 @keyframes input-shadow {
   0% {
-    box-shadow: none;
+    box-shadow: inset 0 0 0.25rem #373737;
   }
   50% {
-    box-shadow: inset 0 0 0.5rem #373737;
+    box-shadow: inset 0 0 0.75rem #373737;
   }
   100% {
-    box-shadow: none;
+    box-shadow: inset 0 0 0.25rem #373737;
   }
 }
