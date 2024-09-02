@@ -19,10 +19,17 @@ const slice = createSlice({
       ...state,
       tables: action.payload,
     }),
+    updateTables: (state, action: PayloadAction<Tables>) => ({
+      ...state,
+      tables: {
+        ...state.tables,
+        ...action.payload,
+      },
+    }),
   },
 })
 
 export const tableReducer = slice.reducer
-export const { setTables } = slice.actions
+export const { setTables, updateTables } = slice.actions
 
 export const tablesSelector = (state: RootState) => state.table.tables

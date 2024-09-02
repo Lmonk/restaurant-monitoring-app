@@ -13,15 +13,17 @@ interface SeatProps {
 const GuestsRow = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
 `
 
 const Seat = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'taken',
 })<SeatProps>`
   width: 0.75rem;
-  height: 0.75rem;
   fill: ${({ taken }) => (taken ? 'gray' : 'green')};
+
+  @media (max-width: 768px) {
+    width: 0.5rem;
+  }
 `
 
 export const GuestsComponent = ({ maxGuests, guests }: GuestComponentProps) => {

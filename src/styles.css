@@ -127,4 +127,29 @@ table {
   margin: 2rem auto;
   max-width: 1017px;
   height: calc(100vh - 4rem);
+  overflow: hidden;
+}
+
+@-webkit-keyframes input-shadow {
+  0% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: inset 0 0 0.5rem #373737;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+@keyframes input-shadow {
+  0% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: inset 0 0 0.5rem #373737;
+  }
+  100% {
+    box-shadow: none;
+  }
 }
