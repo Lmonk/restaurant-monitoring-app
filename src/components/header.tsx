@@ -45,7 +45,7 @@ const Wrapper = styled.div.withConfig({
 
 function getHeaderItem(groupTables: TableKeysByType, type: TableType) {
   return (
-    <div>
+    <div key={type}>
       {tableNames[type]}: {groupTables[columnsByType[type]].length}
     </div>
   )

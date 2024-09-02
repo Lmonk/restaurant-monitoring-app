@@ -105,8 +105,6 @@ export function getTableIdsToUpdate(tableIds: string[], tables: Tables) {
   percent = Math.ceil(percent)
   const halfWithWarning = Math.floor(percent / 2)
 
-  console.log(percent, halfWithWarning)
-
   // Select random tables with the warning property
   const selectedWithWarning = []
   for (let i = 0; i < halfWithWarning && tablesWithWarning.length > 0; i++) {

@@ -20,6 +20,8 @@ const InputWrapper = styled.div`
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   padding: 0 1rem;
+  font-weight: 600;
+  color: gray;
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -31,6 +33,8 @@ const Input = styled.input`
   margin-left: 0.5rem;
   text-align: center;
   width: 5rem;
+  font-weight: 600;
+  color: gray;
 `
 
 export const App = () => {
