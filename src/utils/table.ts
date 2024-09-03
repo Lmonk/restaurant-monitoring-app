@@ -33,14 +33,20 @@ export function getMaxTables(groupedTables: TableKeysByType) {
 // Function to group tables by their types
 export function groupTablesByType(tables: Tables) {
   // Reduce the tables object into a grouped structure based on table types
-  return Object.keys(tables).reduce((acc, key) => {
-    if (!acc[tableTypeColumnIds[tables[key].type]]) {
-      acc[tableTypeColumnIds[tables[key].type]] = []
+  return Object.keys(tables).reduce<TableKeysByType>(
+    (acc, key) => {
+      // Push the table key into the appropriate array based on its type
+      acc[tableTypeColumnIds[tables[key].type]].push(key)
+      return acc
+    },
+    // Initialize the accumulator object with empty arrays for each table type
+    {
+      [tableTypeColumnIds[TableType.BOOTH_TABLE]]: [],
+      [tableTypeColumnIds[TableType.DINING_TABLE]]: [],
+      [tableTypeColumnIds[TableType.OUTDOOR_TABLE]]: [],
+      [tableTypeColumnIds[TableType.PRIVATE_DINING_TABLE]]: [],
     }
-    // Push the table key into the appropriate array based on its type
-    acc[tableTypeColumnIds[tables[key].type]].push(key)
-    return acc
-  }, {} as TableKeysByType)
+  )
 }
 
 export function getInitialTables(tablesAmount: number) {
