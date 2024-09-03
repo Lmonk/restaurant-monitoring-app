@@ -98,12 +98,8 @@ export function getTablesUpdate(tableIds: string[], tables: Tables) {
 
 export function getTableIdsToUpdate(tableIds: string[], tables: Tables) {
   // Filter tables with and without the warning property set to true
-  const tablesWithWarning = tableIds.filter(
-    (key) => tables[key].warning === true
-  )
-  const tablesWithoutWarning = tableIds.filter(
-    (key) => tables[key].warning !== true
-  )
+  const tablesWithWarning = tableIds.filter((key) => tables[key].warning)
+  const tablesWithoutWarning = tableIds.filter((key) => !tables[key].warning)
 
   // Determine the number of tables to select (20% or 50% of total depending on size)
   const idsAmount = tableIds.length
