@@ -20,9 +20,15 @@
 
 To get started with **RestorantApp**, clone the repository and install the dependencies:
 
-```sh
+```
 git clone https://github.com/Lmonk/restaurant-monitoring-app.git
+```
+
+```sh
 cd restaurant-monitoring-app
+```
+
+```sh
 npm install
 ```
 
